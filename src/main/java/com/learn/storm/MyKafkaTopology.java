@@ -16,6 +16,7 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import backtype.storm.spout.Scheme;
 import clojure.lang.IFn;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -104,13 +105,15 @@ public class MyKafkaTopology
     {
         String zks = "10.108.219.4:2181,10.108.219.208:2181,10.108.219.12:2181";
         String topic = "my-replic";
-        String zkRoot = "/home/zhzy/software/storm";
+        String zkRoot = "/storm";
         String id = "word";
 
         BrokerHosts brokerHosts = new ZkHosts(zks);
         SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, topic, zkRoot, id);
         spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
+//        spoutConfig.
         spoutConfig.zkServers = Arrays.asList(new String[]{"10.108.219.4", "10.108.219.208", "10.108.219.12"});
+
         spoutConfig.zkPort = 2181;
 
         TopologyBuilder builder = new TopologyBuilder();
@@ -123,7 +126,7 @@ public class MyKafkaTopology
         Config config = new Config();
 
         String name = MyKafkaTopology.class.getSimpleName();
-        if(args != null && args.length < 0){
+        if(args != null && args.length > 0){
             config.put(Config.NIMBUS_HOST, args[0]);
             config.setNumWorkers(3);
             StormSubmitter.submitTopologyWithProgressBar(name, config, builder.createTopology());
@@ -135,7 +138,5 @@ public class MyKafkaTopology
             Thread.sleep(60000);
             cluster.shutdown();
         }
-
-
     }
 }
