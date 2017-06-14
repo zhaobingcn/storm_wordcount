@@ -17,7 +17,6 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import backtype.storm.spout.Scheme;
-import clojure.lang.IFn;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import storm.kafka.*;
